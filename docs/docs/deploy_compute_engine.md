@@ -1,4 +1,4 @@
-Este documento vai mostrar o passo a passo para realizar a implantação de um modelo 
+Este tutorial vai mostrar o passo a passo para realizar a implantação de um modelo 
 usando o GCP Compute Engine
 
 
@@ -10,7 +10,7 @@ Clicar em Ativar (leva uns minutos)
 ![alt text](image.png)
 
 Clicar em Criar instância
-Selecione o tipo de máquina E2 micro, aba de SO seleciona Ubunto:
+Selecione o tipo de máquina E2 micro, aba de SO seleciona Ubuntu:
 ![alt text](image-1.png)
 ![alt text](image-2.png)
 
@@ -89,5 +89,7 @@ pip install --upgrade pip setuptools wheel
 
 - Iniciar a aplicação FastAPI
 ```
-fastapi dev src/app/main.py
+fastapi run main.py --host 0.0.0.0 --port 8000
 ```
+
+Testei no navegador acessando http:<IP_EXTERNO>:8000
