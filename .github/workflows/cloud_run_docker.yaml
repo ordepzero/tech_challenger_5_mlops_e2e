@@ -58,6 +58,8 @@ env:
   REPOSITORY: ${{ secrets.REPOSITORY_NAME }} # TODO: update Artifact Registry repository name
   SERVICE: ${{ secrets.SERVICE_NAME }} # TODO: update Cloud Run service name
   REGION: ${{ secrets.SERVICE_REGION }} # TODO: update Cloud Run service region
+  WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+  WIF_SERVICE_ACCOUNT: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
 jobs:
   deploy:
