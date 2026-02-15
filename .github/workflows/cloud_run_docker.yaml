@@ -53,11 +53,11 @@ on:
       - $default-branch
 
 env:
-  PROJECT_ID: ${{ secret.RUN_PROJECT }} # TODO: update Google Cloud project id
-  GAR_LOCATION: ${{ secret.GAR_LOCATION }} # TODO: update Artifact Registry location
-  REPOSITORY: ${{ secret.REPOSITORY_NAME }} # TODO: update Artifact Registry repository name
-  SERVICE: ${{ secret.SERVICE_NAME }} # TODO: update Cloud Run service name
-  REGION: ${{ secret.SERVICE_REGION }} # TODO: update Cloud Run service region
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }} # TODO: update Google Cloud project id
+  GAR_LOCATION: ${{ secrets.GAR_LOCATION }} # TODO: update Artifact Registry location
+  REPOSITORY: ${{ secrets.REPOSITORY_NAME }} # TODO: update Artifact Registry repository name
+  SERVICE: ${{ secrets.SERVICE_NAME }} # TODO: update Cloud Run service name
+  REGION: ${{ secrets.SERVICE_REGION }} # TODO: update Cloud Run service region
 
 jobs:
   deploy:
