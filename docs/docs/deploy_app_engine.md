@@ -51,3 +51,20 @@ Depois executar o comando:
 ```
 gcloud app deploy
 ```
+
+ou com debug (dica: aqui é realmente verboso)
+```
+gcloud app deploy --verbosity=debug
+```
+
+Executei o seguinte comando para entender as permissões
+```
+gcloud app describe
+```
+
+Precisei rodar o comando para dar permissão de acessar o bucket
+```
+gcloud projects add-iam-policy-binding project-28f296f3-806a-47c3-941 \
+  --member="serviceAccount:project-28f296f3-806a-47c3-941@appspot.gserviceaccount.com" \
+  --role="roles/storage.admin"
+```

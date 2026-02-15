@@ -19,4 +19,3 @@ seaborn
 unidecode
 openpyxl
 fastapi[standard]
--e .

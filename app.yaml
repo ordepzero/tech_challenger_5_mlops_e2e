@@ -1,9 +1,2 @@
-runtime: python
-env: flex
-entrypoint: uvicorn main:app --host 0.0.0.0 --port $UVICORN_PORT
-
-runtime_config:
-  python_version: 3
-
-includes:
-- env_vars.yaml
+runtime: python312
+entrypoint: uvicorn main:app --host 0.0.0.0 --port $PORT
