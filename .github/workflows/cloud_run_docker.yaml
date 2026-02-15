@@ -75,10 +75,13 @@ jobs:
 
       - name: Debug Environment
         run: |
-          echo "Checking variables (empty/set):"
-          [ -z "${{ env.PROJECT_ID }}" ] && echo "PROJECT_ID is EMPTY" || echo "PROJECT_ID is set"
-          [ -z "${{ env.WIF_PROVIDER }}" ] && echo "WIF_PROVIDER is EMPTY" || echo "WIF_PROVIDER is set"
-          [ -z "${{ env.WIF_SERVICE_ACCOUNT }}" ] && echo "WIF_SERVICE_ACCOUNT is EMPTY" || echo "WIF_SERVICE_ACCOUNT is set"
+          echo "Checking SECRETS (set/empty):"
+          [ -z "${{ secrets.RUN_PROJECT }}" ] && echo "SECRET RUN_PROJECT is EMPTY" || echo "SECRET RUN_PROJECT is set"
+          [ -z "${{ secrets.WIF_PROVIDER }}" ] && echo "SECRET WIF_PROVIDER is EMPTY" || echo "SECRET WIF_PROVIDER is set"
+          
+          echo "Checking VARIABLES (set/empty):"
+          [ -z "${{ vars.RUN_PROJECT }}" ] && echo "VAR RUN_PROJECT is EMPTY" || echo "VAR RUN_PROJECT is set"
+          [ -z "${{ vars.WIF_PROVIDER }}" ] && echo "VAR WIF_PROVIDER is EMPTY" || echo "VAR WIF_PROVIDER is set"
 
 
       # - name: Google Auth
