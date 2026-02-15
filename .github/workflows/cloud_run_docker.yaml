@@ -69,19 +69,10 @@ jobs:
       id-token: 'write'
 
     runs-on: ubuntu-latest
+    environment: ml-api
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Debug Environment
-        run: |
-          echo "Checking SECRETS (set/empty):"
-          [ -z "${{ secrets.RUN_PROJECT }}" ] && echo "SECRET RUN_PROJECT is EMPTY" || echo "SECRET RUN_PROJECT is set"
-          [ -z "${{ secrets.WIF_PROVIDER }}" ] && echo "SECRET WIF_PROVIDER is EMPTY" || echo "SECRET WIF_PROVIDER is set"
-          
-          echo "Checking VARIABLES (set/empty):"
-          [ -z "${{ vars.RUN_PROJECT }}" ] && echo "VAR RUN_PROJECT is EMPTY" || echo "VAR RUN_PROJECT is set"
-          [ -z "${{ vars.WIF_PROVIDER }}" ] && echo "VAR WIF_PROVIDER is EMPTY" || echo "VAR WIF_PROVIDER is set"
 
 
       # - name: Google Auth
