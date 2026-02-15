@@ -58,9 +58,11 @@ env:
   REPOSITORY: ${{ secrets.REPOSITORY_NAME }} # TODO: update Artifact Registry repository name
   SERVICE: ${{ secrets.SERVICE_NAME }} # TODO: update Cloud Run service name
   REGION: ${{ secrets.SERVICE_REGION }} # TODO: update Cloud Run service region
-  WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
-  WIF_SERVICE_ACCOUNT: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+  WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }} # projects/855061287579/locations/global/workloadIdentityPools/ml-api-pool/providers/github
+  WIF_SERVICE_ACCOUNT: ${{ secrets.WIF_SERVICE_ACCOUNT }} # cloud-run-docker-deployer@project-28f296f3-806a-47c3-941.iam.gserviceaccount.com
 
+#projects/855061287579/locations/global/workloadIdentityPools/ml-api-pool/providers/github
+#projects/855061287579/locations/global/workloadIdentityPools/ml-api-pool/providers/github-provider
 jobs:
   deploy:
     # Add 'id-token' with the intended permissions for workload identity federation
@@ -78,8 +80,8 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
-          workload_identity_provider: '${{ vars.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
-          service_account: '${{ vars.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
+          workload_identity_provider: '${{ env.WIF_PROVIDER }}' # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          service_account: '${{ env.WIF_SERVICE_ACCOUNT }}' # e.g. - my-service-account@my-project.iam.gserviceaccount.com
 
       # NOTE: Alternative option - authentication via credentials json
       # - name: Google Auth
