@@ -1,5 +1,5 @@
 Criar o diretório .github/workflows
-Criar o arquivo cloud_run.yaml neste diretório
+Criar o arquivo cloud_run.yaml neste diretório baseado no [cloudrun-docker.yml](https://github.com/google-github-actions/example-workflows/blob/main/workflows/deploy-cloudrun/cloudrun-docker.yml) oficial do google
 
 
 Configurar Workload Identity Pool no console para permitir o GitHub realizar a integração de acordo com a página [Configurar a federação de identidade](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines?hl=pt-br#github-actions)
