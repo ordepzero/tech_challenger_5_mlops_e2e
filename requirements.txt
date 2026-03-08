@@ -2,7 +2,7 @@ black
 flake8
 ipython
 isort
-jupyterlab
+#jupyterlab
 loguru
 matplotlib
 mkdocs
