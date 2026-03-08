@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'fastapi'
+    static_configs:
+      - targets: ['airflow-webserver:8080'] # Example, but we should instrument the API
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

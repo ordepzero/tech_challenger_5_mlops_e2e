@@ -191,6 +191,8 @@ cython_debug/
 .pypirc
 
 src/web/gema.py
+src/web/generator.py
+src/web/verify_logic.py
 notebooks/mlruns/*
 notebooks/mlflow.db
 mlflow.db
