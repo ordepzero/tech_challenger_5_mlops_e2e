@@ -1,21 +1,20 @@
 from feast import Entity, FeatureView, Field, FileSource, ValueType
-from feast.types import Float32, Int32, String
+from feast.types import Int32
 from datetime import timedelta
-import os
 
 # Define the student entity
 student = Entity(
     name="student",
     join_keys=["registro_unico"],
+    value_type=ValueType.STRING,
     description="Student ID (RA)",
 )
 
 # Define the source for student performance features
-# Note: In a real Airflow/Feast setup, this would be a dynamic path or a data warehouse.
-# For local, we point to the processed parquet.
+# Using relative path from the feature_repo directory
 student_performance_source = FileSource(
-    path="/opt/airflow/data/processed/year=2026/month=03/day=02/student_performance_2024.parquet", # Example path
-    timestamp_field="event_timestamp", # We need to make sure our preprocessing adds this
+    path="../data/refined/pede_refined_all.parquet",
+    timestamp_field="event_timestamp",
     created_timestamp_column="created_timestamp",
 )
 
@@ -27,13 +26,13 @@ student_performance_fv = FeatureView(
     schema=[
         Field(name="num_idade", dtype=Int32),
         Field(name="cod_genero", dtype=Int32),
-        Field(name="indic_desenv_educ_24", dtype=Float32),
         Field(name="melhor_avaliacao_score", dtype=Int32),
         Field(name="pior_avaliacao_score", dtype=Int32),
-        Field(name="defasagem_positiva", dtype=Int32),
-        Field(name="defasagem_negativa", dtype=Int32),
         Field(name="num_fase_atual", dtype=Int32),
         Field(name="flag_bolsa_estudos", dtype=Int32),
+        # Adding some other potential features from prep
+        Field(name="is_escola_publica", dtype=Int32),
+        Field(name="qtd_defasagem", dtype=Int32),
     ],
     online=True,
     source=student_performance_source,

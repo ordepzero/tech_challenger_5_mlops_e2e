@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
-COPY data/ ./data/
+RUN mkdir -p data
 COPY feature_repo/ ./feature_repo/
 
 EXPOSE 8000
