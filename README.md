@@ -1,10 +1,22 @@
-# tech_challenger_5_project
+# Datathon: Previsão de Defasagem Escolar - Passos Mágicos
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
+<p align="center">
+  <img src="https://passosmagicos.org.br/wp-content/themes/passos-magicos/assets/images/logo.png" alt="Passos Mágicos Logo" width="200"/>
+</p>
 
-Project to evaluate the performance of students of Passos Mágicos
+## Sobre a Passos Mágicos
+
+A **Passos Mágicos** é uma associação sem fins lucrativos que atua na transformação da vida de crianças e jovens de baixa renda, proporcionando melhores oportunidades através de educação de qualidade, auxílio psicológico/psicopedagógico e ampliação da visão de mundo. 
+
+Saiba mais em: [passosmagicos.org.br](https://passosmagicos.org.br/)
+
+## O Desafio (Tech Challenger 5 - FIAP)
+
+Este projeto faz parte do **Tech Challenger 5** do curso de Pós-Graduação em Engenharia de Machine Learning da **FIAP**. O objetivo central é desenvolver modelos de Machine Learning capazes de estimar o **risco de defasagem escolar** de cada estudante atendido pela associação nos ciclos de 2022, 2023 e 2024.
+
+O sistema visa atuar como uma ferramenta de apoio à decisão, permitindo que a coordenação pedagógica identifique precocemente alunos em situação crítica e direcione recursos de forma mais assertiva.
+
+---
 
 ## Project Organization
 
