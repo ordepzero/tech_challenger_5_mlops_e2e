@@ -59,6 +59,36 @@ Project to evaluate the performance of students of Passos Mágicos
 
 --------
 
+## Tratamento de Dados e Justificativas (EDA & DataPrep)
+
+Antes da modelagem, os dados passaram por um rigoroso processo de limpeza e padronização, detalhado nos notebooks `01` a `04`. Abaixo estão os principais tratamentos e suas motivações técnicas:
+
+### 1. Padronização de Esquemas (Multi-ano)
+*   **Ação:** Renomeação de colunas variadas (ex: `RA`, `Nome Anonimizado`, `Idade 22`) para um padrão único (`registro_unico`, `nome_anonimizado`, `num_idade`).
+*   **Justificativa:** Os nomes das colunas mudavam a cada ano da base PEDE. A padronização é essencial para permitir o *join* temporal via Feast e o treinamento de modelos em bases unificadas.
+
+### 2. Saneamento de Idades e Datas
+*   **Ação:** Recálculo da idade com base no `num_ano_nascimento` e um ano de referência fixo.
+*   **Justificativa:** Identificamos inconsistências onde o campo "Idade" não batia com o ano de nascimento em alguns registros. O recálculo garante que a "idade" seja uma feature comparável entre diferentes safras de dados.
+
+### 3. Codificação de Gênero e Instituição
+*   **Ação:** Mapeamento de `Menino/Masculino` para `0` e `Menina/Feminino` para `1`. Identificação binária de Escola Pública.
+*   **Justificativa:** Modelos de Machine Learning exigem entradas numéricas. A unificação de termos (Menino vs Masculino) remove ruídos de digitação.
+
+### 4. Tratamento de "Pedras" (Classificação Passos Mágicos)
+*   **Ação:** Normalização de strings (remoção de acentos), tratamento de valores ausentes como "quartzo" (ou categoria base) e criação de variáveis de "Mudança de Pedra" entre anos.
+*   **Justificativa:** A "Pedra" é o principal indicador de progresso. Criar uma feature de "evolução" (subiu ou desceu de pedra) permite que o modelo capture a trajetória do aluno, não apenas seu estado atual.
+
+### 5. Engenharia de Features de Texto (NLP Básico)
+*   **Ação:** Extração de flags binárias (`tem_destaque`, `tem_melhorar`) a partir dos campos de observações dos avaliadores.
+*   **Justificativa:** Transformamos feedbacks qualitativos subjetivos em indicadores quantitativos que sinalizam proatividade ou necessidade de atenção imediata.
+
+### 6. Tratamento de Missing Values (Imputação)
+*   **Ação:** Notas ausentes foram tratadas dependendo do contexto (em alguns casos preenchidas com a média da fase, em outros mantidas como sinalizadores de novos alunos).
+*   **Justificativa:** Evita o descarte de registros valiosos (especialmente de alunos novos) e mantém a integridade estatística das variáveis de desempenho (IDA, IEG, etc).
+
+--------
+
 
 ## Modelagem e Justificativas
 
