@@ -54,62 +54,6 @@ Project to evaluate the performance of students of Passos Mágicos
     │   ├── predict.py          <- Code to run model inference with trained models          
     │   └── train.py            <- Code to train models
     │
-# tech_challenger_5_project
-
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
-
-Project to evaluate the performance of students of Passos Mágicos
-
-## Project Organization
-
-```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-│
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         src and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── src   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes src a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
     └── plots.py                <- Code to create visualizations
 ```
 
@@ -132,7 +76,7 @@ No projeto da Passos Mágicos, exploramos três abordagens principais para preve
 
 ### Estratégias de Treinamento
 
-*   **Abordagem 1 (Snapshot 2022):** Focada em prever a "Pedra" de 2022 usando apenas dados de 2020-2021. É a forma mais rigorosa de testar a capacidade preditiva do modelo sem vazamento de dados do futuro.
+*   **Abordagem 1 (Snapshot 2022):** Focada em prever se o aluno apresenta **defasagem** em 2022 usando apenas dados desse ano. É a forma mais direta de identificar riscos educacionais imediatos sem depender de histórico externo ao ciclo atual.
 *   **Abordagem 2 (Expansão de Contexto):** Incorpora indicadores de evasão (saída em 2023) e defasagem negativa, enriquecendo o perfil do aluno para uma predição mais sensível a riscos sociais.
 *   **Abordagem 3 (Base Unificada):** Combina todos os anos (2022-2024) em um único dataset para aumentar o volume de dados e permitir que o modelo aprenda padrões gerais que persistem ao longo do tempo.
 
@@ -143,7 +87,23 @@ A escolha das métricas visa garantir que o modelo seja **confiável para entrar
 *   **Acurácia (Accuracy):** Indica a proporção total de acertos. Se o valor for **X**, o modelo acertou **X%** das situações gerais. Entretanto, em bases desbalanceadas, ela pode ser enganosa.
 *   **F1-Score (Macro):** É a nossa métrica de controle. Um valor **Y** indica o equilíbrio entre precisão e recall para todas as classes. 
 
-**Análise de Confiabilidade:**
+### Fluxo de Dados da plataforma
+
+A plataforma segue um ciclo de vida de dados estruturado para garantir que as predições sejam consistentes e baseadas em dados validados:
+
+1.  **Carga (Upload):** O usuário fornece um arquivo (CSV/Excel) via interface Streamlit.
+2.  **Validação:** O sistema verifica se as colunas essenciais (ex: `registro_unico`, `num_idade`) estão presentes e se os valores respeitam o domínio esperado (ex: idades positivas, flags binárias).
+3.  **Enriquecimento (Feature Store):**
+    *   **Offline Store (Parquet):** Os dados históricos consolidados (2022-2024) são usados para treinar o modelo e realizar backtesting de longo prazo.
+    *   **Online Store (SQLite):** Utilizado para prover as features mais recentes com baixa latência durante a inferência na plataforma.
+4.  **Predição:** O modelo carrega os pesos (via MLflow) e gera o resultado.
+5.  **Persistência:** Importante notar que os dados carregados para predição são **temporários** (em memória). A base oficial `all.parquet` só é atualizada via notebook de Feature Store para garantir governança.
+
+**Por que o Feast serve de duas formas?**
+*   **Offline:** Essencial para "Point-in-Time Joins". Ele reconstrói o passado exatamente como ele era no momento de cada evento, evitando vazamento de dados (*data leakage*).
+*   **Online:** Otimizado para consultas rápidas de um único `registro_unico`. Em vez de ler um arquivo Parquet de 3000 linhas, ele acessa um índice SQLite de alta performance.
+
+### Análise de Confiabilidade:
 - **Abordagens 1 e 2:** Apresentam métricas de Acurácia e F1-Score muito próximas. Isso indica que os modelos são equilibrados e altamente confiáveis para prever tanto a classe majoritária quanto os casos críticos.
 - **Abordagem 3:** Pode apresentar uma lacuna entre Acurácia (alta) e F1-Score (baixo). Isso indica desbalanceamento de classes, onde o modelo prioriza a classe mais frequente. Para produção, isso requer técnicas de balanceamento (como SMOTE ou pesos de classe) para evitar falsos negativos em alunos de risco.
 
@@ -153,9 +113,9 @@ As três abordagens foram testadas utilizando `Random Forest` e `Logistic Regres
 
 | Abordagem | Modelo | Acurácia | F1-Score (Macro) | Contexto |
 | :--- | :--- | :--- | :--- | :--- |
-| **Abordagem 1** | Random Forest | ~92.5% | ~0.89 | Histórico 2020-21 para prever 2022 |
-| **Abordagem 2** | Random Forest | ~88.3% | ~0.85 | Join 2022+2023 via registro_unico |
-| **Abordagem 3** | Logistic Regression | ~85.6% | ~0.82 | Base unificada 2022-2024 via Feature Store |
+| **Modelo 1** | Random Forest | ~92.5% | ~0.89 | Previsão de Defasagem em 2022 |
+| **Modelo 2** | Random Forest | ~88.3% | ~0.85 | Join 2022+2023 via registro_unico |
+| **Modelo 3** | Logistic Regression | ~85.6% | ~0.82 | Base unificada 2022-2024 via Feature Store |
 
 > [!NOTE]
 > A Abordagem 1 apresenta a maior acurácia por lidar com um subconjunto mais específico de alunos veteranos, enquanto a Abordagem 3 foca na generalização através de todo o histórico via Feature Store.
@@ -168,4 +128,22 @@ As três abordagens foram testadas utilizando `Random Forest` e `Logistic Regres
 2. Processe os dados base: `.\.venv\Scripts\python -m jupyter nbconvert --execute notebooks/04_dataprep.ipynb --to notebook --inplace`
 3. Configure a Feature Store: `.\.venv\Scripts\python -m jupyter nbconvert --execute notebooks/05_feature_store.ipynb --to notebook --inplace`
 4. Execute o treinamento e comparação: `.\.venv\Scripts\python -m jupyter nbconvert --execute notebooks/06_model.ipynb --to notebook --inplace`
-4. Inicie o dashboard Streamlit: `python -m streamlit run src/web/app.py`
+5. **Inicie a API de Predição (Necessário para o Dashboard):** 
+   ```powershell
+   .\.venv\Scripts\python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8001
+   ```
+6. Inicie o dashboard Streamlit: `.\.venv\Scripts\python -m streamlit run src/web/app.py`
+
+### 🛠️ Exploração de Infraestrutura
+
+*   **Feast UI:** Para visualizar as entidades, features e o estado do repositório, execute:
+    ```powershell
+    cd feature_repo
+    ..\.venv\Scripts\feast ui
+    ```
+    Acesse em `http://localhost:8888`.
+*   **MLflow UI:** Para comparar experimentos e versões de modelos:
+    ```powershell
+    .\.venv\Scripts\mlflow ui --backend-store-uri sqlite:///mlflow.db
+    ```
+    Acesse em `http://localhost:5000`.

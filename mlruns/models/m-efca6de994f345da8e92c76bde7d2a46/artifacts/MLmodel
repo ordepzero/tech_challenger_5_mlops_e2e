@@ -1,0 +1,32 @@
+artifact_path: file:///D:/arquivos_antigos/Projetos/FIAP/Fase5/tech_challenger_5_project/mlruns/models/m-efca6de994f345da8e92c76bde7d2a46/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.10
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+is_signature_from_type_hint: false
+mlflow_version: 3.9.0
+model_id: m-efca6de994f345da8e92c76bde7d2a46
+model_size_bytes: 320696
+model_uuid: m-efca6de994f345da8e92c76bde7d2a46
+prompts: null
+run_id: d4a5a7a0b5ad4583be8786a0a6e8847f
+signature:
+  inputs: '[{"type": "long", "name": "num_idade", "required": true}, {"type": "long",
+    "name": "cod_genero", "required": true}, {"type": "long", "name": "is_escola_publica",
+    "required": true}, {"type": "long", "name": "flag_bolsa_estudos", "required":
+    true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-03-09 01:03:00.730710'
